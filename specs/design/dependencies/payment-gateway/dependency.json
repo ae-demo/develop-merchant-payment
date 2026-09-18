@@ -1,10 +1,6 @@
 {
   "name": "payment-gateway",
-  "description": "Collects customer payments over mobile money and card in Kenya and Nigeria, and disburses net settlement payouts to merchants' payout accounts. No provider has been chosen yet — the PRD leaves this an open capability.",
-  "suggestions": [
-    { "name": "Flutterwave", "style": "rest-api", "description": "Pan-African aggregator covering mobile money and card collections plus payouts in both Kenya and Nigeria." },
-    { "name": "Paystack", "style": "rest-api", "description": "Strong Nigeria card/bank coverage with mobile money and payouts across supported African markets." },
-    { "name": "Cellulant (Tingg)", "style": "rest-api", "description": "Africa-focused mobile money aggregation, strong in East Africa including Kenya." },
-    { "name": "DPO Pay", "style": "rest-api", "description": "Pan-African payment processor with card and mobile money collections and merchant payouts." }
-  ]
+  "description": "Collects customer payments over mobile money and card in Kenya and Nigeria, and disburses net settlement payouts to merchants' payout accounts.",
+  "provider": "Flutterwave",
+  "style": "rest-api"
 }

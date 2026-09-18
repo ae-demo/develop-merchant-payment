@@ -1,0 +1,4 @@
+{
+  "name": "merchant-identity-service",
+  "description": "The separate, other-team-owned system of record for who a merchant is, whether they may trade, their payout account, and their credit limit. This project reads trading status and payout account from it to gate settlement and route payouts; it never writes to it. Not published as an org-service in this environment yet, so its contract is not yet resolvable — no interface has been provided."
+}

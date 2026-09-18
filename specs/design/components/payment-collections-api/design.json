@@ -1,0 +1,19 @@
+{
+  "name": "payment-collections-api",
+  "type": "service",
+  "version": "0.1.0",
+  "language": "Ballerina",
+  "buildpack": "docker",
+  "appPath": "payment-collections-api",
+  "entrypoint": "deployment/service",
+  "exposure": "intranet",
+  "dependencies": [
+    { "kind": "platform-resource", "name": "thunder-auth", "resourceType": "thunder-app" },
+    { "kind": "platform-resource", "name": "ledger-db", "resourceType": "postgres-mopay" },
+    { "kind": "external", "name": "payment-gateway", "description": "Records collections notified by the gateway and calls it to disburse each merchant's net settlement." },
+    { "kind": "external", "name": "merchant-identity-service", "description": "Checks a merchant's trading status and payout account before including them in a settlement run." }
+  ],
+  "description": "Aggregates merchant collections from mobile money and card, keeps the double-entry ledger, runs the fixed daily settlement cadence (netting fees, gating on trading status, disbursing through the payment gateway), and serves the merchant portal's own-data views and in-app notifications. Does not own merchant identity, trading eligibility, payout account or credit limit, and never converts between currencies.",
+  "stories": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "skillsPinned": ["openapi-conventions", "ballerina", "api-management", "thunder-authentication"]
+}

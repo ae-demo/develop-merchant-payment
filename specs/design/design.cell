@@ -1,0 +1,19 @@
+title Merchant Payment Collections & Settlement
+
+component merchant-portal-webapp as "Merchant Portal" web-application
+component payment-collections-api as "Payment Collections API" service
+component ledger-db as "Ledger Database" database
+
+east thunder-auth as "Thunder Auth" identity-server
+south payment-gateway as "Payment Gateway" service
+south merchant-identity-service as "Merchant Identity Service" service
+
+north -> merchant-portal-webapp
+
+merchant-portal-webapp -> payment-collections-api
+merchant-portal-webapp -> thunder-auth
+
+payment-collections-api -> thunder-auth
+payment-collections-api -> ledger-db
+payment-collections-api -> payment-gateway
+payment-collections-api -> merchant-identity-service

@@ -1,0 +1,53 @@
+{
+  "version": 3,
+  "permissions": [
+    {
+      "resource": "collections",
+      "component": "payment-collections-api",
+      "description": "A merchant's own collected transactions",
+      "actions": [
+        { "handle": "read", "description": "The caller's own transactions" }
+      ]
+    },
+    {
+      "resource": "ledger",
+      "component": "payment-collections-api",
+      "description": "A merchant's own double-entry ledger",
+      "actions": [
+        { "handle": "read", "description": "The caller's own ledger entries" }
+      ]
+    },
+    {
+      "resource": "settlements",
+      "component": "payment-collections-api",
+      "description": "A merchant's own settlements, past and upcoming",
+      "actions": [
+        { "handle": "read", "description": "The caller's own settlements" }
+      ]
+    },
+    {
+      "resource": "notifications",
+      "component": "payment-collections-api",
+      "description": "A merchant's own in-app notifications",
+      "actions": [
+        { "handle": "read", "description": "The caller's own notifications" },
+        { "handle": "acknowledge", "description": "Mark the caller's own notification as read" }
+      ]
+    }
+  ],
+  "groups": [
+    { "name": "Merchants", "description": "Businesses accepting customer payments through this platform" }
+  ],
+  "roles": [
+    {
+      "name": "Merchant",
+      "description": "Views their own collections, ledger, settlements and notifications.",
+      "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "grants": ["collections:read", "ledger:read", "settlements:read", "notifications:read", "notifications:acknowledge"],
+      "assignTo": ["Merchants"]
+    }
+  ],
+  "testUsers": [
+    { "username": "test-merchant", "roles": ["Merchant"] }
+  ]
+}

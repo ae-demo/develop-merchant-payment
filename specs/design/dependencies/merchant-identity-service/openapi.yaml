@@ -1,0 +1,72 @@
+openapi: 3.0.3
+x-aep-assumed: true
+info:
+  title: Internal Merchant Identity Service
+  version: "1.0"
+  description: >
+    ASSUMED interface — no published document exists for this other-team-owned
+    internal system. Written to cover only what payment-collections-api calls:
+    reading a merchant's trading status and payout account before including
+    them in a settlement run. Uncertain: exact auth scheme (assumed a static
+    API key), exact status/error vocabulary, and whether credit limit is
+    exposed on this same endpoint (included here since the PRD names it as
+    data this system owns, though this design does not use it yet).
+servers:
+  - url: /
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: integer }
+        message: { type: string }
+    MerchantAccount:
+      type: object
+      required: [merchantId, country, currency, tradingStatus]
+      properties:
+        merchantId: { type: string }
+        country: { type: string, enum: [KE, NG] }
+        currency: { type: string, enum: [KES, NGN] }
+        tradingStatus: { type: string, enum: [active, suspended] }
+        payoutAccount:
+          type: object
+          nullable: true
+          properties:
+            accountId: { type: string }
+            provider: { type: string }
+            accountRef: { type: string, description: masked account/mobile-money reference }
+        creditLimit:
+          type: number
+          format: double
+          nullable: true
+          description: Not consumed by this design; present because the identity system owns it.
+security:
+  - apiKey: []
+paths:
+  /merchants/{merchantId}:
+    get:
+      operationId: getMerchantAccount
+      summary: A merchant's identity, trading status and payout account
+      x-aep-source: assumed — modeled on common merchant KYC/eligibility API shapes
+      parameters:
+        - name: merchantId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The merchant's identity record
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MerchantAccount' }
+        '404':
+          description: No such merchant
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }

@@ -1,0 +1,4 @@
+apiVersion = "agentic-engineer/v1"
+name = "develop-merchant-payment"
+createdAt = "2026-09-18T06:24:23Z"
+idea = "I want to develop a merchant payment collections and settlement business operating in two African countries. Merchants take payments from their customers over mobile money and card. The system aggregates those collections, keeps a double-entry ledger, settles net amounts to merchants on a schedule, and gives merchants a self-service view of what they have collected and when they will be paid. Merchant identity — who a merchant is, whether they may trade, their payout account and their credit limit — is owned by a separate system, run by another team."

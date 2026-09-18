@@ -1,0 +1,136 @@
+openapi: 3.0.3
+x-aep-assumed: true
+info:
+  title: Flutterwave v3 API (assumed slice)
+  version: "3"
+  description: >
+    ASSUMED interface — Flutterwave publishes its API as page-by-page
+    reference documentation (developer.flutterwave.com), not a single
+    downloadable OpenAPI document. Written to cover only what
+    payment-collections-api calls: verifying a customer collection and
+    disbursing/checking a merchant settlement payout (transfer). Uncertain:
+    exact field-level validation rules, full error code catalogue, and
+    whether transfer completion arrives synchronously or only via webhook —
+    modeled here as a pollable status field.
+servers:
+  - url: https://api.flutterwave.com/v3
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Flutterwave secret key
+  schemas:
+    Error:
+      type: object
+      properties:
+        status: { type: string }
+        message: { type: string }
+    Transaction:
+      type: object
+      properties:
+        id: { type: integer }
+        tx_ref: { type: string }
+        flw_ref: { type: string }
+        amount: { type: number, format: double }
+        currency: { type: string, enum: [KES, NGN] }
+        status: { type: string, enum: [successful, failed, pending] }
+        payment_type: { type: string, description: "e.g. mobilemoney, card" }
+        created_at: { type: string, format: date-time }
+    TransferRequest:
+      type: object
+      required: [account_bank, account_number, amount, currency, reference]
+      properties:
+        account_bank: { type: string, description: bank/mobile-money code }
+        account_number: { type: string }
+        amount: { type: number, format: double }
+        currency: { type: string, enum: [KES, NGN] }
+        reference: { type: string, description: idempotency reference, e.g. our settlement id }
+        narration: { type: string }
+    Transfer:
+      type: object
+      properties:
+        id: { type: integer }
+        reference: { type: string }
+        amount: { type: number, format: double }
+        currency: { type: string, enum: [KES, NGN] }
+        status: { type: string, enum: [NEW, PENDING, SUCCESSFUL, FAILED] }
+        created_at: { type: string, format: date-time }
+security:
+  - bearerAuth: []
+paths:
+  /transactions/{id}/verify:
+    get:
+      operationId: verifyTransaction
+      summary: Verify a customer collection's status
+      x-aep-source: https://developer.flutterwave.com/v3.0/reference/validate-a-charge
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Transaction status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  data: { $ref: '#/components/schemas/Transaction' }
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /transfers:
+    post:
+      operationId: createTransfer
+      summary: Disburse a merchant's net settlement payout
+      x-aep-source: https://developer.flutterwave.com/v3.0/reference/create-a-transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TransferRequest' }
+      responses:
+        '200':
+          description: Transfer initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  data: { $ref: '#/components/schemas/Transfer' }
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /transfers/{id}:
+    get:
+      operationId: getTransfer
+      summary: Check a settlement payout's status
+      x-aep-source: https://developer.flutterwave.com/v3.0/reference/get-a-transfer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Transfer status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  data: { $ref: '#/components/schemas/Transfer' }
+        '404':
+          description: No such transfer
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }

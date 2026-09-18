@@ -3,6 +3,16 @@
   "description": "Collects customer payments over mobile money and card in Kenya and Nigeria, and disburses net settlement payouts to merchants' payout accounts.",
   "provider": "Flutterwave",
   "style": "rest-api",
+  "contract": "openapi.yaml",
+  "provenance": {
+    "sourceUrl": "https://developer.flutterwave.com/v3.0/reference/create-a-transfer",
+    "fetchedAt": "2026-09-18T06:41:25Z",
+    "sliced": false
+  },
+  "config": [
+    { "key": "FLUTTERWAVE_BASE_URL", "defaultValue": "https://api.flutterwave.com/v3", "description": "Flutterwave API base URL" },
+    { "key": "FLUTTERWAVE_SECRET_KEY", "secret": true, "description": "Your Flutterwave secret key, from the Flutterwave dashboard API keys page" }
+  ],
   "assumed": {
     "by": "Admin",
     "at": "2026-09-18T06:41:25Z"

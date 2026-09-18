@@ -7,13 +7,85 @@
   "appPath": "payment-collections-api",
   "entrypoint": "deployment/service",
   "exposure": "intranet",
-  "dependencies": [
-    { "kind": "platform-resource", "name": "thunder-auth", "resourceType": "thunder-app" },
-    { "kind": "platform-resource", "name": "ledger-db", "resourceType": "postgres-mopay" },
-    { "kind": "external", "name": "payment-gateway", "description": "Records collections notified by the gateway and calls it to disburse each merchant's net settlement." },
-    { "kind": "external", "name": "merchant-identity-service", "description": "Checks a merchant's trading status and payout account before including them in a settlement run." }
+  "stories": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
   ],
   "description": "Aggregates merchant collections from mobile money and card, keeps the double-entry ledger, runs the fixed daily settlement cadence (netting fees, gating on trading status, disbursing through the payment gateway), and serves the merchant portal's own-data views and in-app notifications. Does not own merchant identity, trading eligibility, payout account or credit limit, and never converts between currencies.",
-  "stories": [2, 3, 4, 5, 6, 7, 8, 9, 10],
-  "skillsPinned": ["openapi-conventions", "ballerina", "api-management", "thunder-authentication"]
+  "dependencies": [
+    {
+      "kind": "platform-resource",
+      "name": "thunder-auth",
+      "resourceType": "thunder-app",
+      "wiring": {
+        "ref": "develop-merchant-64225d1e",
+        "envBindings": {
+          "client_id": "THUNDER_AUTH_CLIENT_ID",
+          "issuer": "THUNDER_AUTH_ISSUER",
+          "jwks_url": "THUNDER_AUTH_JWKS_URL",
+          "resource": "THUNDER_AUTH_RESOURCE",
+          "scopes": "THUNDER_AUTH_SCOPES"
+        }
+      }
+    },
+    {
+      "kind": "platform-resource",
+      "name": "ledger-db",
+      "resourceType": "postgres-mopay",
+      "wiring": {
+        "ref": "develop-merchant-cb6aebe1",
+        "envBindings": {
+          "adminPassword": "LEDGER_DB_ADMINPASSWORD",
+          "adminURL": "LEDGER_DB_ADMINURL",
+          "database": "LEDGER_DB_DATABASE",
+          "host": "LEDGER_DB_HOST",
+          "ownerUrl": "LEDGER_DB_OWNERURL",
+          "password": "LEDGER_DB_PASSWORD",
+          "port": "LEDGER_DB_PORT",
+          "url": "LEDGER_DB_URL",
+          "username": "LEDGER_DB_USERNAME"
+        }
+      }
+    },
+    {
+      "kind": "external",
+      "name": "payment-gateway",
+      "description": "Records collections notified by the gateway and calls it to disburse each merchant's net settlement.",
+      "wiring": {
+        "ref": "develop-merchant-16305116",
+        "envBindings": {
+          "FLUTTERWAVE_BASE_URL": "FLUTTERWAVE_BASE_URL",
+          "FLUTTERWAVE_SECRET_KEY": "FLUTTERWAVE_SECRET_KEY"
+        }
+      }
+    },
+    {
+      "kind": "external",
+      "name": "merchant-identity-service",
+      "description": "Checks a merchant's trading status and payout account before including them in a settlement run.",
+      "wiring": {
+        "ref": "develop-merchant-4a3a16d8",
+        "envBindings": {
+          "MERCHANT_IDENTITY_API_KEY": "MERCHANT_IDENTITY_API_KEY",
+          "MERCHANT_IDENTITY_BASE_URL": "MERCHANT_IDENTITY_BASE_URL"
+        }
+      }
+    }
+  ],
+  "exposesAPI": {
+    "auth": "end-user-required"
+  },
+  "skillsPinned": [
+    "openapi-conventions",
+    "ballerina",
+    "api-management",
+    "thunder-authentication"
+  ]
 }

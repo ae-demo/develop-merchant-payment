@@ -7,11 +7,54 @@
   "appPath": "merchant-portal-webapp",
   "entrypoint": "deployment/web-application",
   "exposure": "internet",
-  "dependencies": [
-    { "kind": "component", "name": "payment-collections-api" },
-    { "kind": "platform-resource", "name": "thunder-auth", "resourceType": "thunder-app" }
+  "stories": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
   ],
   "description": "The merchant's self-service portal: sign in, view collections, the ledger, upcoming and past settlements, transaction detail and in-app notifications for their own account only. Holds no business logic and no secrets — everything is read from payment-collections-api.",
-  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  "skillsPinned": ["wireframes", "react-webapp", "oxygen-ui-design-system", "thunder-authentication"]
+  "dependencies": [
+    {
+      "kind": "component",
+      "name": "payment-collections-api",
+      "wiring": {
+        "endpoint": {
+          "component": "develop-merchant-payment-payment-collections-api",
+          "name": "http",
+          "visibility": "project",
+          "envBindings": {
+            "address": "PAYMENT_COLLECTIONS_API_URL"
+          }
+        }
+      }
+    },
+    {
+      "kind": "platform-resource",
+      "name": "thunder-auth",
+      "resourceType": "thunder-app",
+      "wiring": {
+        "ref": "develop-merchant-64225d1e",
+        "envBindings": {
+          "client_id": "THUNDER_AUTH_CLIENT_ID",
+          "issuer": "THUNDER_AUTH_ISSUER",
+          "jwks_url": "THUNDER_AUTH_JWKS_URL",
+          "resource": "THUNDER_AUTH_RESOURCE",
+          "scopes": "THUNDER_AUTH_SCOPES"
+        }
+      }
+    }
+  ],
+  "skillsPinned": [
+    "wireframes",
+    "react-webapp",
+    "oxygen-ui-design-system",
+    "thunder-authentication"
+  ]
 }

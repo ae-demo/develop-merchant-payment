@@ -101,16 +101,12 @@ receipt — customers interact only with the mobile money/card rails
 themselves, never with this platform.
 - Advance or credit-based funding against future settlements.
 - Cross-currency conversion for a merchant trading in one country's currency.
+- Refunds or chargebacks from a customer back through mobile money or card:
+handled entirely outside this platform's ledger and settlement flow.
 
 ## Open Questions
 
-1. Which two countries (and currencies) does the platform operate in?
-2. What should the fixed settlement cadence actually be (daily, weekly,
-other), and is a nightly-batch style automation sufficient, or does it need
-to be adjustable without a code change?
-3. What is the actual fee structure (flat fee, percentage, tiered) the
-platform charges merchants on collections?
-4. Which mobile money and card payment providers will the platform integrate
-with for collections in each country?
-5. Are refunds or chargebacks from a customer back through mobile money/card
-part of this platform's ledger flow, or handled entirely outside it?
+1. Which mobile money and card payment providers will the platform integrate
+with for collections in Kenya and Nigeria? No preference has been stated
+yet — left for the design to resolve.
+

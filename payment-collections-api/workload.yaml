@@ -1,0 +1,42 @@
+apiVersion: openchoreo.dev/v1alpha1
+metadata:
+  name: payment-collections-api
+
+endpoints:
+  - name: http
+    type: HTTP
+    port: 9090
+    basePath: /
+    visibility:
+      - project
+      - internal
+      - external
+
+dependencies:
+  resources:
+    - ref: develop-merchant-64225d1e
+      envBindings:
+        client_id: THUNDER_AUTH_CLIENT_ID
+        issuer: THUNDER_AUTH_ISSUER
+        jwks_url: THUNDER_AUTH_JWKS_URL
+        resource: THUNDER_AUTH_RESOURCE
+        scopes: THUNDER_AUTH_SCOPES
+    - ref: develop-merchant-cb6aebe1
+      envBindings:
+        adminPassword: LEDGER_DB_ADMINPASSWORD
+        adminURL: LEDGER_DB_ADMINURL
+        database: LEDGER_DB_DATABASE
+        host: LEDGER_DB_HOST
+        ownerUrl: LEDGER_DB_OWNERURL
+        password: LEDGER_DB_PASSWORD
+        port: LEDGER_DB_PORT
+        url: LEDGER_DB_URL
+        username: LEDGER_DB_USERNAME
+    - ref: develop-merchant-16305116
+      envBindings:
+        FLUTTERWAVE_BASE_URL: FLUTTERWAVE_BASE_URL
+        FLUTTERWAVE_SECRET_KEY: FLUTTERWAVE_SECRET_KEY
+    - ref: develop-merchant-4a3a16d8
+      envBindings:
+        MERCHANT_IDENTITY_API_KEY: MERCHANT_IDENTITY_API_KEY
+        MERCHANT_IDENTITY_BASE_URL: MERCHANT_IDENTITY_BASE_URL

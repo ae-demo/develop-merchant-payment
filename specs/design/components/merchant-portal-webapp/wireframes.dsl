@@ -34,6 +34,15 @@ screen TransactionDetail "A single collection's detail"
     row
       text "Status | Collected"
       text "Occurred at | Today 14:02"
+  heading "Transaction fields"
+  table "Field | Value"
+    row "Transaction ID | TXN-58213"
+    row "Channel | Mobile Money"
+    row "Amount | KES 1,200"
+    row "Currency | KES"
+    row "Status | Collected"
+    row "Occurred at | Today 14:02"
+    row "Included in settlement | Tomorrow's settlement"
   button "Back to transactions" -> Transactions
 
 screen Ledger "Double-entry ledger backing the net settlement calculation"

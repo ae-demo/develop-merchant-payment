@@ -1,0 +1,28 @@
+apiVersion: openchoreo.dev/v1alpha1
+metadata:
+  name: merchant-portal-webapp
+
+endpoints:
+  - name: http
+    type: HTTP
+    port: 9090
+    basePath: /
+    visibility:
+      - project
+      - external
+
+dependencies:
+  endpoints:
+    - component: develop-merchant-payment-payment-collections-api
+      name: http
+      visibility: project
+      envBindings:
+        address: PAYMENT_COLLECTIONS_API_URL
+  resources:
+    - ref: develop-merchant-64225d1e
+      envBindings:
+        client_id: THUNDER_AUTH_CLIENT_ID
+        issuer: THUNDER_AUTH_ISSUER
+        jwks_url: THUNDER_AUTH_JWKS_URL
+        resource: THUNDER_AUTH_RESOURCE
+        scopes: THUNDER_AUTH_SCOPES

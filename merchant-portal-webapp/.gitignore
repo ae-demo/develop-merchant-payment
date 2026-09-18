@@ -1,0 +1,10 @@
+node_modules
+dist
+
+# Un-ignore src/authz/core.ts: this clone's per-run .git/info/exclude carries a
+# `core.*` crash-artifact pattern (for other stacks' core dumps) that
+# collides with thunder-authentication's mandated verbatim filename
+# src/authz/core.ts. A more specific .gitignore may negate a broader exclude
+# from .git/info/exclude, so this line — not a rename, which the skill's
+# copied module surface forbids — is the fix.
+!src/authz/core.ts
